@@ -175,6 +175,7 @@ public class MobileViewListActivity extends ListActivity {
 	 * Add a value to the white list.
 	 * @param value The value to add.
 	 */
+
 	private void doAddToMobileViewList(String value) {
 		mDbAdapter.insertInMobileViewUrlList(value);
 		Controller.getInstance().resetMobileViewUrlList();
@@ -239,7 +240,8 @@ public class MobileViewListActivity extends ListActivity {
 						dialog.dismiss();
 						doClearMobileViewList();
 					}			
-		});      
+		}); 
     }
+        
 
 }
