@@ -20,8 +20,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.zirco.ui.runnables.XmlHistoryBookmarksExporter;
-import org.zirco.utils.ApplicationUtils;
-import org.zirco.utils.DateUtils;
+import org.zirco.utils.Application;
+import org.zicro.utils.DateUtils;
+
 
 import android.content.ContentValues;
 import android.content.Context;
