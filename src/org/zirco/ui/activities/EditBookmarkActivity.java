@@ -44,7 +44,7 @@ public class EditBookmarkActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         Window w = getWindow();
-		 w.requestFeature(Window.FEATURE_LEFT_ICON);
+	w.requestFeature(Window.FEATURE_LEFT_ICON);
         
         setContentView(R.layout.edit_bookmark_activity);
         
@@ -77,14 +77,12 @@ public class EditBookmarkActivity extends Activity {
     	if (extras != null) {
     		
     		String title = extras.getString(Constants.EXTRA_ID_BOOKMARK_TITLE);
-    		if ((title != null) &&
-    				(title.length() > 0)) {
+    		if ((title != null) && (title.length() > 0)) {
     			mTitleEditText.setText(title);
     		}
     		
     		String url = extras.getString(Constants.EXTRA_ID_BOOKMARK_URL);
-    		if ((url != null) &&
-    				(url.length() > 0)) {
+    		if ((url != null) && (url.length() > 0)) {
     			mUrlEditText.setText(url);
     		} else {
     			mUrlEditText.setHint("http://");
