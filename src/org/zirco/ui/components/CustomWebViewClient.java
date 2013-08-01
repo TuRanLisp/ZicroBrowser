@@ -131,7 +131,7 @@ public class CustomWebViewClient extends WebViewClient {
 		
 		if (isExternalApplicationUrl(url)) {
 			mMainActivity.onExternalApplicationUrl(url);
-			return true;
+			return true; 
 			
 		} else if (url.startsWith(Constants.URL_ACTION_SEARCH)) {
 			String searchTerm = url.replace(Constants.URL_ACTION_SEARCH, "");
@@ -171,6 +171,8 @@ public class CustomWebViewClient extends WebViewClient {
         
         boolean reuseHttpAuthUsernamePassword = handler.useHttpAuthUsernamePassword();
         
+        
+        
         if (reuseHttpAuthUsernamePassword && view != null) {
             String[] credentials = view.getHttpAuthUsernamePassword(
                     host, realm);
@@ -186,8 +188,9 @@ public class CustomWebViewClient extends WebViewClient {
         	LayoutInflater factory = LayoutInflater.from(mMainActivity);
             final View v = factory.inflate(R.layout.http_authentication_dialog, null);
             
+           
             if (username != null) {
-                ((EditText) v.findViewById(R.id.username_edit)).setText(username);
+            	((EditText) v.findViewById(R.id.username_edit)).setText(username);
             }
             if (password != null) {
                 ((EditText) v.findViewById(R.id.password_edit)).setText(password);
