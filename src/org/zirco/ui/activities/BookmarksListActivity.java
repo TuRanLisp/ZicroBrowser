@@ -142,38 +142,41 @@ public class BookmarksListActivity extends Activity {
 	/**
 	 * Set the list loading animation.
 	 */
+    
     private void setAnimation() {
     	AnimationSet set = new AnimationSet(true);
-
-        Animation animation = new AlphaAnimation(0.0f, 1.0f);
-        animation.setDuration(100);
-        set.addAnimation(animation);
-
-        animation = new TranslateAnimation(
-            Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-            Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f
-        );
-        animation.setDuration(100);
-        set.addAnimation(animation);
-
-        LayoutAnimationController controller =
-                new LayoutAnimationController(set, 0.5f);
-
-        mList.setLayoutAnimation(controller);
-    }
+    	Animation animation = new AlphaAnimation(0.0f, 1.0f);
+    	animation.setDuration(100);
+    	set.addAnimation(animation);
+    	
+    	animation = new TranslateAnimation(
+    		Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELR, 0.0f,
+    		Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0.0f
+    	);
+  	animation.setDuration(100);
+  	set.addAnimation(animation);
+  	
+  	LayoutAnimationController controller =
+  	        new LayoutAnimationController(set,0.5f);
+  	        
+  	mList.setLayoutAnimation(controller);
+  	}
     
-    /**
+   
+    
+     /**
      * Display the add bookmark dialog.
      */
     private void openAddBookmarkDialog() {
-		Intent i = new Intent(this, EditBookmarkActivity.class);
-		
-		i.putExtra(Constants.EXTRA_ID_BOOKMARK_ID, (long) -1);
-		i.putExtra(Constants.EXTRA_ID_BOOKMARK_TITLE, "");
-		i.putExtra(Constants.EXTRA_ID_BOOKMARK_URL, "");
-		
-		startActivityForResult(i, ACTIVITY_ADD_BOOKMARK);
-	}
+    	       Intent i = new Intent(this, EditBookmarkActivity.class);
+    	       
+    	       i.putExtra(Constants.EXTRA_ID_BOOKMARK_ID,(long) -1);
+    	       i.putExtra(Constants.EXTRA_ID_BOOKMARK_TITLE, "");
+               i.putExtra(Constants.EXTRA_ID_BOOKMARK_URL, "");
+               
+               startActivityForResult(i, ACTIVITY_ADD_BOOKMARK);
+    }
+    
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -217,11 +220,12 @@ public class BookmarksListActivity extends Activity {
 			}
 		}
 		
-		menu.add(0, MENU_OPEN_IN_TAB, 0, R.string.BookmarksListActivity_MenuOpenInTab);        
+	menu.add(0, MENU_OPEN_IN_TAB, 0, R.string.BookmarksListActivity_MenuOpenInTab);        
         menu.add(0, MENU_COPY_URL, 0, R.string.BookmarksHistoryActivity_MenuCopyLinkUrl);
         menu.add(0, MENU_SHARE, 0, R.string.Main_MenuShareLinkUrl);
         menu.add(0, MENU_EDIT_BOOKMARK, 0, R.string.BookmarksListActivity_MenuEditBookmark);
         menu.add(0, MENU_DELETE_BOOKMARK, 0, R.string.BookmarksListActivity_MenuDeleteBookmark);
+        
     }
     
     @Override
@@ -326,25 +330,28 @@ public class BookmarksListActivity extends Activity {
     	alert.show();
     }
     
+  
+    
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        
-        switch (requestCode) {
-		case ACTIVITY_EDIT_BOOKMARK:
-			if (resultCode == RESULT_OK) {
-				fillData();
-			}
-			break;
-		case ACTIVITY_ADD_BOOKMARK:
-			if (resultCode == RESULT_OK) {
-				fillData();
-			}
-			break;
-			
-		default:
-			break;
-		}
+    	super.onActivityResult(requestCode, resultCode, intent);
+    	
+    	switch (requestCode) {
+    		case ACTIVITY_EDIT_BOOKMARK:
+    			if(resultCode == RESULT_OK) {
+    				fillData();
+    			}
+    			break;
+    		case ACTIVITY_ADD_BOOKMARK:
+    			if(resultCode == RESULT_OK) {
+    				fillData();
+    			}
+    			break;
+    			
+    		default:
+    			break;
+    		}
     }
 
 }
