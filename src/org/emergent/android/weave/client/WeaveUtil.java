@@ -72,10 +72,9 @@ public class WeaveUtil {
     try {
       double modDouble = Double.parseDouble(modified) * 1000;
       long mod = Math.round(modDouble);
-//      Dbg.printf("mod: %d ; cur : %d ; delta : %d\n", mod, now, now - mod);
       return new Date(mod);
     } catch (Exception e) {
-      return new Date(); // todo buggy ?
+      return new Date(); 
     }
   }
 
@@ -132,6 +131,7 @@ public class WeaveUtil {
     }
   }
 
+
   public static byte[] toUtf8Bytes(String data) {
     try {
       return data == null ? null : data.getBytes("UTF-8");
@@ -147,7 +147,7 @@ public class WeaveUtil {
       throw new IllegalStateException(e);
     }
   }
-
+  
   public static void zeroize(char[] secret) {
     if (secret != null)
       Arrays.fill(secret, '\0');
@@ -163,7 +163,7 @@ public class WeaveUtil {
       throw new IllegalStateException(e);
     }
   }
-
+  
   @SuppressWarnings("unused")
   private static HttpEntity toHttpEntity(WeaveBasicObject wbo) throws JSONException {
     try {
