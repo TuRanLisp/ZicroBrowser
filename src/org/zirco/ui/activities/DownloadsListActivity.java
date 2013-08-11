@@ -1,18 +1,3 @@
-/*
- * Zirco Browser for Android
- * 
- * Copyright (C) 2010 J. Devauchelle and contributors.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * version 3 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
-
 package org.zirco.ui.activities;
 
 import org.zirco.R;
@@ -70,16 +55,15 @@ public class DownloadsListActivity extends ListActivity implements IDownloadEven
 	
 	@Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		
-		switch(item.getItemId()) {
-		case MENU_CLEAR_DOWNLOADS:
-			Controller.getInstance().clearCompletedDownloads();
-			fillData();
-			return true;
-		default: return super.onMenuItemSelected(featureId, item);
-		}
-	}
-
+    	 
+    	        switch(item.getItemId()) {
+    	        case MENU_CLEAR_DOWNLOADS:
+    	        	controller.getInstance().clearCompletedDownloads();
+    	        	fillData();
+    	        	return true;
+    	        default: return super.onMenuItemSelected(featureId, item);
+    	        }
+    }
 	/**
 	 * Fill the download list.
 	 */
@@ -88,44 +72,44 @@ public class DownloadsListActivity extends ListActivity implements IDownloadEven
 		setListAdapter(mAdapter);
 	}
 
-	@Override
+	@Override	
 	public void onDownloadEvent(String event, Object data) {
-		if (event.equals(EventConstants.EVT_DOWNLOAD_ON_START)) {
+		if(event.equals(EventConstants.EVT_DOWNLOAD_ON_START)) {
 			fillData();
-		} else if (event.equals(EventConstants.EVT_DOWNLOAD_ON_PROGRESS)) {				
-			if (data != null) {
+		}else if(event.equals(EventConstants.EVT_DOWNLOAD_ON_PROGRESS)) {
+			if(data != null) {
 				DownloadItem item = (DownloadItem) data;
 				ProgressBar bar = mAdapter.getBarMap().get(item);
-				if (bar != null) {
+				if(bar != null) {
 					bar.setMax(100);
 					bar.setProgress(item.getProgress());
-				}				
+				}
 			}
-		} else if (event.equals(EventConstants.EVT_DOWNLOAD_ON_FINISHED)) {
-			if (data != null) {
+			
+		}else if (event.equals(EventConstants.EVT_DOWNLOAD_ON_FINISHED)) {
+			if(data != null) {
 				DownloadItem item = (DownloadItem) data;
 				
-				TextView title = mAdapter.getTitleMap().get(item);
-				if (title != null) {
-					if (item.isAborted()) {
+				TextView text = mAapter.getTitleMap().get(item);
+				if(title != null) {
+					if(item.isAborted()) {
 						title.setText(String.format(getResources().getString(R.string.DownloadListActivity_Aborted), item.getFileName()));
 					} else {
 						title.setText(String.format(getResources().getString(R.string.DownloadListActivity_Finished), item.getFileName()));
 					}
 				}
 				
-				ProgressBar bar = mAdapter.getBarMap().get(item);
-				if (bar != null) {					
+				ProgressBar bar =mAdapter.getBarMap().get(item);
+				if(bar != null) {
 					bar.setProgress(bar.getMax());
 				}
 				
 				ImageButton button = mAdapter.getButtonMap().get(item);
-				if (button != null) {
+				if(button != null) {
 					button.setEnabled(false);
 				}
 			}
 		}
-		
 	}
 	
 }
