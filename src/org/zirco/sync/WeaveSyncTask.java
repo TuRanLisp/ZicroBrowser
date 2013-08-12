@@ -138,10 +138,7 @@ public class WeaveSyncTask extends AsyncTask<WeaveAccountInfo, Integer, Throwabl
 			//if (i > 30) break;
 			//Log.d("Decrypted:", decryptedPayload.toString());
 
-			if (decryptedPayload.has(WEAVE_HEADER_TYPE) &&
-					((decryptedPayload.getString(WEAVE_HEADER_TYPE).equals(WEAVE_VALUE_BOOKMARK)) ||
-							(decryptedPayload.getString(WEAVE_HEADER_TYPE).equals(WEAVE_VALUE_FOLDER)))) {
-
+			if (decryptedPayload.has(WEAVE_HEADER_TYPE) && ((decryptedPayload.getString(WEAVE_HEADER_TYPE).equals(WEAVE_VALUE_BOOKMARK)) || (decryptedPayload.getString(WEAVE_HEADER_TYPE).equals(WEAVE_VALUE_FOLDER)))) {
 				if (decryptedPayload.has(WEAVE_VALUE_TITLE)) {					
 					
 					boolean isFolder = decryptedPayload.getString(WEAVE_HEADER_TYPE).equals(WEAVE_VALUE_FOLDER);
@@ -179,6 +176,7 @@ public class WeaveSyncTask extends AsyncTask<WeaveAccountInfo, Integer, Throwabl
 		}
 		
 		int j = 0;
+		
 		ContentValues[] valuesArray = new ContentValues[values.size()];
 		for (ContentValues value : values) {
 			valuesArray[j++] = value;
@@ -227,11 +225,11 @@ public class WeaveSyncTask extends AsyncTask<WeaveAccountInfo, Integer, Throwabl
 						values.put(WeaveColumns.WEAVE_BOOKMARKS_WEAVE_ID, weaveId);
 						values.put(WeaveColumns.WEAVE_BOOKMARKS_WEAVE_PARENT_ID, parentId);
 						values.put(WeaveColumns.WEAVE_BOOKMARKS_TITLE, title);						
-						
+							
 						if (isFolder) {
 							values.put(WeaveColumns.WEAVE_BOOKMARKS_FOLDER, true);
 						} else {
-							String url = decryptedPayload.getString(WEAVE_VALUE_URI);
+							String url = decrypetedPayload.getString(WEAVE_VALUE_URI);
 							
 							values.put(WeaveColumns.WEAVE_BOOKMARKS_FOLDER, false);
 							values.put(WeaveColumns.WEAVE_BOOKMARKS_URL, url);
@@ -275,25 +273,26 @@ public class WeaveSyncTask extends AsyncTask<WeaveAccountInfo, Integer, Throwabl
 	protected void onPostExecute(Throwable result) {
 		mListener.onSyncEnd(result);
 	}
-
-	private QueryResult<List<WeaveBasicObject>> getCollection(UserWeave weave, String name, QueryParams params) throws WeaveException {
-    	if (params == null)
-    		params = new QueryParams();
-    	URI uri = weave.buildSyncUriFromSubpath(name + params.toQueryString());
-    	return weave.getWboCollection(uri);
-    }
 	
-	private Date getLastModified(UserWeave userWeave) throws WeaveException {
+	private QueryResult<List<WeaveBasicObject>> getCollection(UserWeave weave, String name, QueryParams params) throws WeaveExcepetion {
+	if (params == null)
+		params = new QueryParams();
+	URI uri = weave.buildSyncUriFromSubpath(name + params.toQueryString());
+	return weave.getWboCollection(uri);
+	}
+	
+
+	private Date getLastModified(UserWeave userweave) throws WeaveExcepetion {
 		try {
 			JSONObject infoCol = userWeave.getNode(UserWeave.HashNode.INFO_COLLECTIONS).getValue();
-
-			if (infoCol.has("bookmarks")) {
-				long modLong = infoCol.getLong("bookmarks");
+			
+			if(infoCol.has("bookmarks")) {
+				long modLog = infoCol.getLong("bookmarks");
 				return new Date(modLong * 1000);
 			}
-
+			
 			return null;
-		} catch (JSONException e) {
+		}catch (JSONException e) {
 			throw new WeaveException(e);
 		}
 	}
