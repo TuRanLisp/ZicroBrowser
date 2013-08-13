@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2010 Cyril Mottier (http://www.cyrilmottier.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.greendroid;
 
 import java.util.ArrayList;
@@ -31,15 +16,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-/**
- * Abstraction of a {@link QuickAction} wrapper. A QuickActionWidget is
- * displayed on top of the user interface (it overlaps all UI elements but the
- * notification bar). Clients may listen to user actions using a
- * {@link OnQuickActionClickListener} .
- *
- * @author Benjamin Fellous
- * @author Cyril Mottier
- */
 public abstract class QuickActionWidget extends PopupWindow {
 
 	private static final int MEASURE_AND_LAYOUT_DONE = 1 << 1;
@@ -64,12 +40,7 @@ public abstract class QuickActionWidget extends PopupWindow {
 	private OnQuickActionClickListener mOnQuickActionClickListener;
 	private ArrayList<QuickAction> mQuickActions = new ArrayList<QuickAction>();
 
-	/**
-	 * Interface that may be used to listen to clicks on quick actions.
-	 *
-	 * @author Benjamin Fellous
-	 * @author Cyril Mottier
-	 */
+
 	public static interface OnQuickActionClickListener {
 		/**
 		 * Clients may implement this method to be notified of a click on a
@@ -212,44 +183,40 @@ public abstract class QuickActionWidget extends PopupWindow {
 	 *
 	 * @param anchor The view the {@link QuickActionWidget} will be anchored to.
 	 */
-	public void show(View anchor) {
-
+	private void show(View anchor) {
+		
 		final View contentView = getContentView();
-
-		if (contentView == null) {
+		
+		if(contentView == null) {
 			throw new IllegalStateException("You need to set the content view using the setContentView method");
 		}
-
-		// Replaces the background of the popup with a cleared background
 		setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+		
 		final int[] loc = mLocation;
 		anchor.getLocationOnScreen(loc);
 		mRect.set(loc[0], loc[1], loc[0] + anchor.getWidth(), loc[1] + anchor.getHeight());
-
+		
 		if (mIsDirty) {
 			clearQuickActions();
 			populateQuickActions(mQuickActions);
 		}
-
+		
 		onMeasureAndLayout(mRect, contentView);
-
+		
 		if ((mPrivateFlags & MEASURE_AND_LAYOUT_DONE) != MEASURE_AND_LAYOUT_DONE) {
-			throw new IllegalStateException("onMeasureAndLayout() did not set the widget specification by calling"
-					+ " setWidgetSpecs()");
+			throw new IllegalStateException("onMeasureAndLayout() did not set the widget specification by calling" + "setWidgetSpecs()");
 		}
-
+		
 		showArrow();
 		prepareAnimationStyle();
 		showAtLocation(anchor, Gravity.NO_GRAVITY, 0, mPopupY);
-	}
-
+ 	}
+	
 	protected void clearQuickActions() {
 		if (!mQuickActions.isEmpty()) {
 			onClearQuickActions();
 		}
 	}
-
 	protected void onClearQuickActions() {
 	}
 
@@ -265,40 +232,38 @@ public abstract class QuickActionWidget extends PopupWindow {
 	}
 
 	private void showArrow() {
-
+		
 		final View contentView = getContentView();
-		final int arrowId = mIsOnTop ? R.id.gdi_arrow_down : R.id.gdi_arrow_up;
+		final int arrowId = nIsOnTop ? R.id.gdi_arrow_down : R.id.gdi_arrow_up;
 		final View arrow = contentView.findViewById(arrowId);
 		final View arrowUp = contentView.findViewById(R.id.gdi_arrow_up);
 		final View arrowDown = contentView.findViewById(R.id.gdi_arrow_down);
-
-		if (arrowId == R.id.gdi_arrow_up) {
+		
+		if(arrowId == R.id.gdi_arrow_up) {
 			arrowUp.setVisibility(View.VISIBLE);
 			arrowDown.setVisibility(View.INVISIBLE);
-		} else if (arrowId == R.id.gdi_arrow_down) {
+		}
+		else if (arrowId == R.id.gdi_arrow_down) {
 			arrowUp.setVisibility(View.INVISIBLE);
 			arrowDown.setVisibility(View.VISIBLE);
 		}
-
+		
 		ViewGroup.MarginLayoutParams param = (ViewGroup.MarginLayoutParams) arrow.getLayoutParams();
-		param.leftMargin = mRect.centerX() - (arrow.getMeasuredWidth()) / 2;
+		param.leftMargin = mRect.centerX() - (arrow.getMeasuredWidth())  / 2;
 	}
 
-	private void prepareAnimationStyle() {
-
+	private void preparaAnimationStyle() {
+		
 		final int screenWidth = mScreenWidth;
 		final boolean onTop = mIsOnTop;
 		final int arrowPointX = mRect.centerX();
-
+		
 		if (arrowPointX <= screenWidth / 4) {
-			setAnimationStyle(onTop ? R.style.GreenDroid_Animation_PopUp_Left
-					: R.style.GreenDroid_Animation_PopDown_Left);
+			setAnimationStyle(onTop ? R.style.GreenDroid_Animation_PopUp_Left : R.style.GreenDroid_Animation_PopDown_Left);
 		} else if (arrowPointX >= 3 * screenWidth / 4) {
-			setAnimationStyle(onTop ? R.style.GreenDroid_Animation_PopUp_Right
-					: R.style.GreenDroid_Animation_PopDown_Right);
+			setAnimationStyle(onTop ? R.style.GreenDroid_Animation_PopUp_Right : R.style.GreenDroid_Animation_PopDown_Right);
 		} else {
-			setAnimationStyle(onTop ? R.style.GreenDroid_Animation_PopUp_Center
-					: R.style.GreenDroid_Animation_PopDown_Center);
+			setAnimationStyle(onTop ? R.style.GreenDroid_Animation_PopUp_Center : R.style.GreenDroid_Animation_PopUp_Center);
 		}
 	}
 
