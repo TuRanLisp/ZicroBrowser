@@ -1,18 +1,3 @@
-/*
- * Zirco Browser for Android
- * 
- * Copyright (C) 2010 J. Devauchelle and contributors.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * version 3 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- */
-
 package org.zirco.ui.runnables;
 
 import java.io.BufferedInputStream;
@@ -88,71 +73,51 @@ public class DownloadRunnable implements Runnable {
 	@Override
 	public void run() {
 		File downloadFile = getFile();
-		
 		if (downloadFile != null) {
-			
 			if (downloadFile.exists()) {
 				downloadFile.delete();
 			}
-			
 			BufferedInputStream bis = null;
 			BufferedOutputStream bos = null;
-			
 			try {
-				
 				mParent.onStart();
-				
 				URL url = new URL(mParent.getUrl());
 				URLConnection conn = url.openConnection();
-				
 				InputStream is = conn.getInputStream();
-							
 				int size = conn.getContentLength();
-				
 				double oldCompleted = 0;
 				double completed = 0;
-				
 				bis = new BufferedInputStream(is);
 				bos = new BufferedOutputStream(new FileOutputStream(downloadFile));
-				
 				boolean downLoading = true;
 				byte[] buffer = new byte[BUFFER_SIZE];
 				int downloaded = 0;
 				int read;
-				
 				while ((downLoading) &&
 						(!mAborted)) {
-
 					if ((size - downloaded < BUFFER_SIZE) &&
 							(size - downloaded > 0)) {
 						buffer = new byte[size - downloaded];
 					}
-
-					read = bis.read(buffer);
 					
+					read = bis.read(buffer);
 					if (read > 0) {
 						bos.write(buffer, 0, read);
 						downloaded += read;
-						
 						completed = ((downloaded * 100f) / size);
-						
 					} else {
 						downLoading = false;
 					}
-					
-					// Notify each 5% or more.
 					if (oldCompleted + 5 < completed) {
 						mParent.onProgress((int) completed);
 						oldCompleted = completed;
 					}
 				}
-
 			} catch (MalformedURLException mue) {
 				mParent.setErrorMessage(mue.getMessage());
 			} catch (IOException ioe) {
 				mParent.setErrorMessage(ioe.getMessage());
 			} finally {
-				
 				if (bis != null) {
 					try {
 						bis.close();
@@ -168,15 +133,12 @@ public class DownloadRunnable implements Runnable {
 					}
 				}							
 			}
-		
 			if (mAborted) {
 				if (downloadFile.exists()) {
 					downloadFile.delete();
 				}
 			}
-			
-		} 
-		
+		}
 		mHandler.sendEmptyMessage(0);
 	}
 	
